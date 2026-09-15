@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저장한 코디 | LOOKPULSE</title>
+  <style>
+    :root {
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-primary-dark: #5C436E;
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-md: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+      --transition: all 0.25s ease;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background: var(--color-background); color: var(--color-text-primary); }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    .header { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .page-head { padding: 36px 0 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; padding-bottom: 60px; }
+    .card { background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+    .card img { width: 100%; height: 320px; object-fit: cover; }
+    .card-info { padding: 16px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo"><span>✦</span><span>LOOKPULSE</span></a>
+      <a href="../index.html" style="font-size:14px; color:var(--color-primary); font-weight:600;">홈으로</a>
+    </div>
+  </header>
+  <main class="container">
+    <div class="page-head">
+      <h1 style="font-size:26px; font-weight:800; margin-bottom:6px;">저장한 코디 컬렉션 🔖</h1>
+      <p style="font-size:14px; color:var(--color-text-secondary);">마음에 들어 북마크해 둔 나만의 룩북 모음입니다.</p>
+    </div>
+    <div class="grid" id="savedGrid"></div>
+  </main>
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/community.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const outfits = await LOOKPULSE.fetchData('outfits.json') || [];
+      const savedIds = LPCommunity.getSaves();
+      const savedOutfits = outfits.filter(o => savedIds.includes(o.id));
+      const grid = document.getElementById('savedGrid');
+
+      if (savedOutfits.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; background:#FFF; border-radius:14px; border:1px dashed #EAEAEA;">저장된 코디가 없습니다. 마음에 드는 코디의 책갈피 아이콘을 눌러보세요!</div>`;
+        return;
+      }
+      grid.innerHTML = savedOutfits.map(o => `
+        <article class="card">
+          <a href="outfit-detail.html?id=${o.id}">
+            <img src="${o.imageUrl}" alt="${o.title}" />
+          </a>
+          <div class="card-info">
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;"><a href="outfit-detail.html?id=${o.id}">${o.title}</a></h3>
+            <span style="font-size:12px; color:var(--color-text-secondary);">#${o.tags.join(' #')}</span>
+          </div>
+        </article>
+      `).join('');
+    });
+  </script>
+</body>
+</html>

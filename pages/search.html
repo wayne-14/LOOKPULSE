@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LOOKPULSE - 코디, 크리에이터, 상품 3-Tab 검색">
+  <title>검색 결과 | LOOKPULSE</title>
+
+  <style>
+    :root {
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-primary-dark: #5C436E;
+      --color-primary-rgb: 139, 111, 158;
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --color-text-tertiary: #999999;
+      --color-accent-gold: #C5A059;
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.06);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background-color: var(--color-background); color: var(--color-text-primary); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 24px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 800; }
+    .logo__icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 16px; }
+
+    /* Search Bar in Header */
+    .search-input-box {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+    }
+    .search-input-box input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+
+    /* Tabs Bar */
+    .search-meta { padding: 32px 0 16px; border-bottom: 1px solid var(--color-border); }
+    .search-query-title { font-size: 24px; font-weight: 800; margin-bottom: 16px; }
+    .tabs-nav { display: flex; gap: 24px; }
+    .tab-btn {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      padding-bottom: 12px;
+      position: relative;
+    }
+    .tab-btn--active {
+      color: var(--color-primary-dark);
+    }
+    .tab-btn--active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-primary);
+      border-radius: 3px;
+    }
+    .tab-count { font-size: 13px; font-weight: 500; color: var(--color-text-tertiary); margin-left: 4px; }
+
+    /* Result Panels */
+    .tab-panel { display: none; padding: 30px 0 60px; }
+    .tab-panel--active { display: block; }
+
+    /* Grid Views */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+    .card__img-wrap {
+      width: 100%;
+      padding-top: 100%;
+      position: relative;
+      background: #F0F0F0;
+    }
+    .card__img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; }
+    .card__content { padding: 16px; }
+    .card__title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .card__sub { font-size: 13px; color: var(--color-text-secondary); }
+    .card__price { font-size: 15px; font-weight: 800; color: var(--color-primary-dark); margin-top: 8px; }
+
+    /* Creator Card In Search */
+    .creator-result-card {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .creator-result-card__avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+
+    /* Empty state */
+    .empty-result {
+      text-align: center;
+      padding: 80px 20px;
+      background: #FFF;
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-md);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo">
+        <span class="logo__icon">✦</span>
+        <span>LOOKPULSE</span>
+      </a>
+      <div class="search-input-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="검색어 입력 후 Enter..." />
+      </div>
+      <div>
+        <a href="explore.html" style="font-size:14px; font-weight:600; color:var(--color-primary);">둘러보기</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="search-meta">
+      <h1 class="search-query-title" id="searchTitle">검색 결과</h1>
+      <div class="tabs-nav">
+        <button class="tab-btn tab-btn--active" data-tab="outfits">
+          코디 <span class="tab-count" id="countOutfits">(0)</span>
+        </button>
+        <button class="tab-btn" data-tab="creators">
+          크리에이터 <span class="tab-count" id="countCreators">(0)</span>
+        </button>
+        <button class="tab-btn" data-tab="products">
+          상품 <span class="tab-count" id="countProducts">(0)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Outfits Tab Panel -->
+    <section class="tab-panel tab-panel--active" id="panel-outfits">
+      <div class="results-grid" id="outfitsResultsGrid"></div>
+    </section>
+
+    <!-- Creators Tab Panel -->
+    <section class="tab-panel" id="panel-creators">
+      <div class="results-grid" id="creatorsResultsGrid"></div>
+    </section>
+
+    <!-- Products Tab Panel -->
+    <section class="tab-panel" id="panel-products">
+      <div class="results-grid" id="productsResultsGrid"></div>
+    </section>
+  </main>
+
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/community.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const [outfits, creators, products] = await Promise.all([
+        LOOKPULSE.fetchData('outfits.json') || [],
+        LOOKPULSE.fetchData('creators.json') || [],
+        LOOKPULSE.fetchData('products.json') || []
+      ]);
+
+      const params = new URLSearchParams(window.location.search);
+      let query = (params.get('q') || '').trim();
+
+      const input = document.getElementById('searchInput');
+      if (input) {
+        input.value = query;
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            window.location.href = `search.html?q=${encodeURIComponent(input.value.trim())}`;
+          }
+        });
+      }
+
+      document.getElementById('searchTitle').innerHTML = query 
+        ? `'<strong>${query}</strong>' 검색 결과` 
+        : `전체 콘텐츠 탐색`;
+
+      // 1. Filter Outfits
+      const qLower = query.toLowerCase();
+      const matchedOutfits = outfits.filter(o => 
+        !query || 
+        o.title.toLowerCase().includes(qLower) || 
+        o.tags.some(t => t.toLowerCase().includes(qLower)) ||
+        o.description.toLowerCase().includes(qLower)
+      );
+
+      // 2. Filter Creators
+      const matchedCreators = creators.filter(c =>
+        !query ||
+        c.name.toLowerCase().includes(qLower) ||
+        c.bio.toLowerCase().includes(qLower) ||
+        c.primaryTags.some(t => t.toLowerCase().includes(qLower))
+      );
+
+      // 3. Filter Products
+      const matchedProducts = products.filter(p =>
+        !query ||
+        p.name.toLowerCase().includes(qLower) ||
+        p.brand.toLowerCase().includes(qLower) ||
+        p.category.toLowerCase().includes(qLower)
+      );
+
+      // Update Tab Counts
+      document.getElementById('countOutfits').textContent = `(${matchedOutfits.length})`;
+      document.getElementById('countCreators').textContent = `(${matchedCreators.length})`;
+      document.getElementById('countProducts').textContent = `(${matchedProducts.length})`;
+
+      // Render Outfits
+      const outfitsGrid = document.getElementById('outfitsResultsGrid');
+      outfitsGrid.innerHTML = matchedOutfits.length > 0 
+        ? matchedOutfits.map(o => `
+          <article class="card">
+            <div class="card__img-wrap" style="padding-top:133%;">
+              <a href="outfit-detail.html?id=${o.id}">
+                <img src="${o.imageUrl}" alt="${o.title}" class="card__img" />
+              </a>
+            </div>
+            <div class="card__content">
+              <h3 class="card__title"><a href="outfit-detail.html?id=${o.id}">${o.title}</a></h3>
+              <p class="card__sub">#${o.tags.join(' #')}</p>
+            </div>
+          </article>
+        `).join('')
+        : `<div class="empty-result"><h3>일치하는 코디가 없습니다.</h3></div>`;
+
+      // Render Creators
+      const creatorsGrid = document.getElementById('creatorsResultsGrid');
+      creatorsGrid.innerHTML = matchedCreators.length > 0
+        ? matchedCreators.map(c => `
+          <div class="creator-result-card">
+            <img src="${c.avatar}" alt="${c.name}" class="creator-result-card__avatar" />
+            <div>
+              <h3 style="font-size:16px; font-weight:700;"><a href="creator-profile.html?id=${c.id}">${c.name}</a></h3>
+              <p style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">${c.bio}</p>
+              <span style="font-size:12px; color:var(--color-primary); font-weight:600;">팔로워 ${(c.followers).toLocaleString()}</span>
+            </div>
+          </div>
+        `).join('')
+        : `<div class="empty-result"><h3>일치하는 크리에이터가 없습니다.</h3></div>`;
+
+      // Render Products
+      const productsGrid = document.getElementById('productsResultsGrid');
+      productsGrid.innerHTML = matchedProducts.length > 0
+        ? matchedProducts.map(p => `
+          <article class="card">
+            <div class="card__img-wrap">
+              <img src="${p.imageUrl}" alt="${p.name}" class="card__img" />
+            </div>
+            <div class="card__content">
+              <div style="font-size:12px; color:var(--color-text-tertiary); font-weight:700;">${p.brand}</div>
+              <h3 class="card__title">${p.name}</h3>
+              <div class="card__price">${p.price.toLocaleString()}원</div>
+              <a href="image-search.html?productId=${p.id}&category=${p.category}" style="display:inline-block; margin-top:8px; font-size:12px; color:var(--color-primary); font-weight:600;">유사 상품 찾기 →</a>
+            </div>
+          </article>
+        `).join('')
+        : `<div class="empty-result"><h3>일치하는 상품이 없습니다.</h3></div>`;
+
+      // Tab Switching
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-btn--active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+
+          btn.classList.add('tab-btn--active');
+          const targetTab = btn.dataset.tab;
+          document.getElementById(`panel-${targetTab}`).classList.add('tab-panel--active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

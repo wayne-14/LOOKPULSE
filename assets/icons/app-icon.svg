@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B6F9E"/>
+      <stop offset="100%" stop-color="#5C436E"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background with rounded corners for app icon -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  <!-- Decorative Ring -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="8"/>
+  <!-- Sparkle / Diamond Fashion Icon -->
+  <g filter="url(#glow)">
+    <path d="M256 80 L290 220 L430 256 L290 292 L256 432 L222 292 L82 256 L222 220 Z" fill="#FFFFFF"/>
+    <!-- Center Accent Pin -->
+    <circle cx="256" cy="256" r="28" fill="#C5A059" stroke="#FFFFFF" stroke-width="6"/>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이 프로필 | LOOKPULSE</title>
+  <style>
+    :root {
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-md: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background: var(--color-background); color: var(--color-text-primary); }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .header { position: sticky; top: 0; background: rgba(255,255,255,0.94); border-bottom: 1px solid var(--color-border); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .profile-box { background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 30px; margin: 36px 0; display: flex; align-items: center; gap: 24px; }
+    .profile-box img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+    .btn-edit { padding: 8px 16px; border-radius: var(--radius-full); border: 1px solid var(--color-border); font-size: 13px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="../index.html" style="font-size:22px; font-weight:800; display:flex; gap:8px;"><span>✦</span><span>LOOKPULSE</span></a>
+      <a href="../index.html" style="font-size:14px; color:var(--color-primary); font-weight:600;">홈으로</a>
+    </div>
+  </header>
+  <main class="container">
+    <div class="profile-box">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" />
+      <div style="flex:1;">
+        <h1 style="font-size:22px; font-weight:800; margin-bottom:4px;">스타일러 나 (My Page)</h1>
+        <p style="font-size:14px; color:var(--color-text-secondary); margin-bottom:10px;">나만의 스타일을 기록하고 발견하는 공간입니다.</p>
+        <div style="display:flex; gap:16px; font-size:13px;">
+          <span>게시물 <strong>3</strong></span>
+          <span>팔로워 <strong>240</strong></span>
+          <span>팔로잉 <strong>85</strong></span>
+        </div>
+      </div>
+      <button class="btn-edit" onclick="LOOKPULSE.showToast('프로필 수정 모달이 열립니다.', 'info')">프로필 편집</button>
+    </div>
+  </main>
+  <script src="../scripts/main.js"></script>
+</body>
+</html>

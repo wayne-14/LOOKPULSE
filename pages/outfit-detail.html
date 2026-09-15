@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LOOKPULSE - 코디 상세 및 착장 상품 핫스팟 확인">
+  <title>코디 상세 | LOOKPULSE</title>
+
+  <style>
+    :root {
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-primary-dark: #5C436E;
+      --color-primary-rgb: 139, 111, 158;
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --color-text-tertiary: #999999;
+      --color-accent-gold: #C5A059;
+      --color-accent-gold-bg: #FDF9F0;
+      --color-like: #FF3B30;
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background-color: var(--color-background); color: var(--color-text-primary); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 800; }
+    .logo__icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 16px; }
+
+    /* Detail Layout (2-Column) */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 36px;
+      padding: 40px 0 80px;
+    }
+
+    /* Left Column: Interactive Outfit Canvas */
+    .outfit-viewer {
+      position: sticky;
+      top: 100px;
+    }
+
+    .outfit-canvas {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      background: #000;
+      user-select: none;
+    }
+
+    .outfit-canvas__img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: var(--transition);
+    }
+
+    .outfit-canvas__hint {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      color: #FFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Hotspot Pins */
+    .hotspot-pin {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .hotspot-pin__pulse {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    .hotspot-pin__core {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      border: 2px solid var(--color-primary);
+    }
+
+    .hotspot-pin--sponsored .hotspot-pin__core {
+      border-color: var(--color-accent-gold);
+      background: var(--color-accent-gold-bg);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Hotspot Popover */
+    .hotspot-popover {
+      position: absolute;
+      z-index: 100;
+      transform: translate(14px, -50%);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lg);
+      min-width: 210px;
+      animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hotspot-popover--left {
+      transform: translate(calc(-100% - 14px), -50%);
+    }
+
+    .hotspot-popover--top {
+      transform: translate(14px, calc(-100% + 14px));
+    }
+
+    .hotspot-popover__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .hotspot-popover__meta { font-size: 13px; color: var(--color-text-secondary); display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .hotspot-popover__price { font-weight: 800; color: var(--color-primary-dark); }
+
+    /* Right Column: Information & Interactions */
+    .outfit-info {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Creator Card */
+    .creator-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFF;
+      padding: 18px 20px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .creator-bar__profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .creator-bar__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--color-primary);
+    }
+
+    .creator-bar__name { font-size: 16px; font-weight: 700; }
+    .creator-bar__stats { font-size: 13px; color: var(--color-text-secondary); }
+
+    .btn-follow {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+      background: #FFF;
+    }
+    .btn-follow:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .btn-follow--active { background: var(--color-primary-light); color: var(--color-primary-dark); border-color: var(--color-primary); }
+
+    /* Post Content */
+    .post-content {
+      background: #FFF;
+      padding: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .sponsor-tag-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-accent-gold-bg);
+      color: var(--color-accent-gold);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .post-title { font-size: 22px; font-weight: 800; margin-bottom: 12px; line-height: 1.35; }
+    .post-desc { font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 18px; }
+    .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+    .post-tag { font-size: 13px; color: var(--color-primary-dark); background: var(--color-primary-light); padding: 4px 10px; border-radius: var(--radius-full); font-weight: 500; }
+
+    /* Social Action Bar */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .btn-social {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+    }
+    .btn-social:hover { background: var(--color-background); color: var(--color-text-primary); }
+    .btn-social--liked { color: var(--color-like) !important; }
+    .btn-social--saved { color: var(--color-primary) !important; }
+
+    /* Tagged Products Section */
+    .tagged-products-box {
+      background: #FFF;
+      padding: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .box-title { font-size: 17px; font-weight: 800; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+    .product-list { display: flex; flex-direction: column; gap: 14px; }
+    .product-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .product-row:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+    .product-row__info { display: flex; flex-direction: column; gap: 2px; }
+    .product-row__brand { font-size: 12px; color: var(--color-text-tertiary); font-weight: 700; }
+    .product-row__name { font-size: 14px; font-weight: 700; }
+    .product-row__price { font-size: 13px; font-weight: 800; color: var(--color-primary-dark); }
+    .btn-match {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-primary);
+      transition: var(--transition);
+    }
+    .btn-match:hover { background: var(--color-primary); color: #FFF; }
+
+    /* Comments Section */
+    .comments-box {
+      background: #FFF;
+      padding: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .comment-input-wrap {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      outline: none;
+    }
+    .comment-input:focus { border-color: var(--color-primary); }
+
+    .btn-comment-submit {
+      padding: 10px 20px;
+      background: var(--color-primary);
+      color: #FFF;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .comment-list { display: flex; flex-direction: column; gap: 16px; }
+    .comment-item { display: flex; gap: 12px; }
+    .comment-item__avatar img { width: 36px; height: 36px; border-radius: 50%; }
+    .comment-item__body { flex: 1; }
+    .comment-item__meta { display: flex; gap: 8px; font-size: 12px; margin-bottom: 2px; }
+    .comment-item__author { font-weight: 700; color: var(--color-text-primary); }
+    .comment-item__time { color: var(--color-text-tertiary); }
+    .comment-item__text { font-size: 14px; color: var(--color-text-secondary); }
+
+    @media (max-width: 900px) {
+      .detail-layout { grid-template-columns: 1fr; }
+      .outfit-viewer { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo">
+        <span class="logo__icon">✦</span>
+        <span>LOOKPULSE</span>
+      </a>
+      <div>
+        <a href="explore.html" style="font-size:14px; font-weight:600; color:var(--color-primary-dark);">← 코디 목록으로</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="detail-layout">
+      <!-- Left Column: Interactive Canvas -->
+      <div class="outfit-viewer">
+        <div class="outfit-canvas" id="canvasContainer">
+          <img src="" alt="코디 사진" class="outfit-canvas__img" id="outfitImg" />
+          <div class="outfit-canvas__hint">
+            <span>💡</span>
+            <span>사진 속 핀을 누르면 상품 정보와 유사 상품을 찾을 수 있어요</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Info & Products & Comments -->
+      <div class="outfit-info">
+        <!-- Creator Header -->
+        <div class="creator-bar">
+          <div class="creator-bar__profile">
+            <img src="" alt="" class="creator-bar__avatar" id="creatorAvatar" />
+            <div>
+              <h3 class="creator-bar__name" id="creatorName"></h3>
+              <p class="creator-bar__stats" id="creatorStats"></p>
+            </div>
+          </div>
+          <button type="button" class="btn-follow" id="followBtn">+ 팔로우</button>
+        </div>
+
+        <!-- Post Content -->
+        <article class="post-content">
+          <div id="sponsorBadgeContainer"></div>
+          <h1 class="post-title" id="outfitTitle"></h1>
+          <p class="post-desc" id="outfitDesc"></p>
+          <div class="post-tags" id="outfitTags"></div>
+
+          <!-- Social Actions -->
+          <div class="action-bar">
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn-social" id="likeBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span id="likeCount">0</span>
+              </button>
+              <button type="button" class="btn-social" id="saveBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                <span>저장하기</span>
+              </button>
+            </div>
+            <span style="font-size:13px; color:var(--color-text-tertiary);" id="viewCount">조회 0</span>
+          </div>
+        </article>
+
+        <!-- Tagged Products List -->
+        <section class="tagged-products-box">
+          <div class="box-title">
+            <span>착장 아이템 정보 (사진 속 핀)</span>
+            <span style="font-size:12px; color:var(--color-primary); font-weight:600;" id="itemCount">0개 상품</span>
+          </div>
+          <div class="product-list" id="productList">
+            <!-- Injected via JavaScript -->
+          </div>
+        </section>
+
+        <!-- Comments -->
+        <section class="comments-box">
+          <div class="box-title">
+            <span>댓글</span>
+          </div>
+          <form class="comment-input-wrap" id="commentForm">
+            <input type="text" class="comment-input" id="commentInput" placeholder="이 코디에 대해 질문하거나 의견을 남겨보세요..." />
+            <button type="submit" class="btn-comment-submit">등록</button>
+          </form>
+          <div class="comment-list" id="commentList">
+            <div class="comment-item">
+              <div class="comment-item__avatar">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&q=80" alt="user" />
+              </div>
+              <div class="comment-item__body">
+                <div class="comment-item__meta">
+                  <span class="comment-item__author">패션러버</span>
+                  <span class="comment-item__time">2시간 전</span>
+                </div>
+                <p class="comment-item__text">자켓 핏이 너무 예뻐요! 키 165cm 기준으로는 기장이 어느 정도 올까요?</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="../scripts/main.js"></script>
+  <script src="../scripts/community.js"></script>
+  <script src="../scripts/image-search.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const [outfits, creators] = await Promise.all([
+        LOOKPULSE.fetchData('outfits.json') || [],
+        LOOKPULSE.fetchData('creators.json') || []
+      ]);
+
+      const params = new URLSearchParams(window.location.search);
+      const outfitId = params.get('id') || 'outfit-1';
+      const outfit = outfits.find(o => o.id === outfitId) || outfits[0];
+      const creator = creators.find(c => c.id === outfit.creatorId) || creators[0];
+
+      if (!outfit) return;
+
+      // Populate Outfit Data
+      document.getElementById('outfitImg').src = outfit.imageUrl;
+      document.getElementById('outfitTitle').textContent = outfit.title;
+      document.getElementById('outfitDesc').textContent = outfit.description;
+      document.getElementById('likeCount').textContent = outfit.likes;
+      document.getElementById('viewCount').textContent = `조회 ${outfit.views.toLocaleString()}회`;
+
+      // Tags
+      document.getElementById('outfitTags').innerHTML = outfit.tags.map(t => `<span class="post-tag">#${t}</span>`).join('');
+
+      // Sponsored Badge
+      if (outfit.isSponsored) {
+        document.getElementById('sponsorBadgeContainer').innerHTML = `
+          <div class="sponsor-tag-box">
+            <span>✨ [공식 협찬 AD]</span>
+            <span>${outfit.sponsorBrand}의 지원을 받아 제작된 코디입니다.</span>
+          </div>
+        `;
+      }
+
+      // Creator Info
+      document.getElementById('creatorAvatar').src = creator.avatar;
+      document.getElementById('creatorName').textContent = creator.name;
+      document.getElementById('creatorStats').textContent = `팔로워 ${(creator.followers).toLocaleString()} · ${creator.badge}`;
+
+      // Follow Button State
+      const followBtn = document.getElementById('followBtn');
+      const followings = LPCommunity.getFollowings();
+      if (followings.includes(creator.id)) {
+        followBtn.classList.add('btn-follow--active');
+        followBtn.textContent = '✓ 팔로잉';
+      }
+      followBtn.addEventListener('click', () => {
+        LPCommunity.toggleFollow(creator.id, followBtn);
+      });
+
+      // Like & Save Buttons
+      const likeBtn = document.getElementById('likeBtn');
+      const saveBtn = document.getElementById('saveBtn');
+      const likes = LPCommunity.getLikes();
+      const saves = LPCommunity.getSaves();
+
+      if (likes.includes(outfit.id)) {
+        likeBtn.classList.add('btn-social--liked');
+        likeBtn.querySelector('svg').setAttribute('fill', 'currentColor');
+      }
+      if (saves.includes(outfit.id)) {
+        saveBtn.classList.add('btn-social--saved');
+        saveBtn.querySelector('svg').setAttribute('fill', 'currentColor');
+      }
+
+      likeBtn.addEventListener('click', () => {
+        const isLiked = LPCommunity.toggleLike(outfit.id, likeBtn);
+        likeBtn.querySelector('svg').setAttribute('fill', isLiked ? 'currentColor' : 'none');
+      });
+
+      saveBtn.addEventListener('click', () => {
+        const isSaved = LPCommunity.toggleSave(outfit.id, saveBtn);
+        saveBtn.querySelector('svg').setAttribute('fill', isSaved ? 'currentColor' : 'none');
+      });
+
+      // Render Pins on Canvas
+      const canvasContainer = document.getElementById('canvasContainer');
+      if (outfit.pins) {
+        LPImageSearch.renderPins(canvasContainer, outfit.pins);
+      }
+
+      // Render Tagged Product List
+      const productList = document.getElementById('productList');
+      document.getElementById('itemCount').textContent = `${outfit.pins.length}개 상품`;
+      productList.innerHTML = outfit.pins.map(p => `
+        <div class="product-row">
+          <div class="product-row__info">
+            <span class="product-row__brand">${p.brand} ${p.isSponsoredItem ? '<span style="color:var(--color-accent-gold); font-weight:800;">[협찬]</span>' : ''}</span>
+            <span class="product-row__name">${p.name}</span>
+            <span class="product-row__price">${p.price.toLocaleString()}원</span>
+          </div>
+          <a href="image-search.html?productId=${p.productId || 'prod-1'}&category=${p.category}" class="btn-match">
+            유사 상품 검색 🔍
+          </a>
+        </div>
+      `).join('');
+
+      // Comment Form Handler
+      const commentForm = document.getElementById('commentForm');
+      const commentInput = document.getElementById('commentInput');
+      const commentList = document.getElementById('commentList');
+
+      commentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = commentInput.value.trim();
+        if (text) {
+          LPCommunity.addComment(commentList, '나 (Me)', text);
+          commentInput.value = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

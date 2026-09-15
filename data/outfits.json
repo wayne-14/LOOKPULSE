@@ -1,0 +1,316 @@
+[
+  {
+    "id": "outfit-1",
+    "title": "가을 무드 빈티지 가죽 자켓 & 와이드 슬랙스",
+    "description": "선선한 가을 성수동 카페 투어에 딱 좋은 차분한 톤온톤 룩입니다. 오버사이즈 브라운 비건 레더 자켓에 와이드 슬랙스를 매치해 편안하면서도 스타일리시하게 연출했어요.",
+    "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-1",
+    "createdAt": "2026-09-14T10:30:00Z",
+    "likes": 342,
+    "saves": 189,
+    "commentsCount": 24,
+    "views": 2150,
+    "isSponsored": true,
+    "sponsorBrand": "무드스튜디오 (Mood Studio)",
+    "season": "autumn",
+    "place": "cafe",
+    "occasion": "daily",
+    "tags": ["가을코디", "성수카페", "레더자켓", "와이드팬츠", "톤온톤"],
+    "pins": [
+      {
+        "id": "pin-1-1",
+        "productId": "prod-1",
+        "x": 48,
+        "y": 38,
+        "category": "top",
+        "name": "오버핏 비건 레더 바이커 자켓",
+        "brand": "무드스튜디오",
+        "price": 149000,
+        "isSponsoredItem": true
+      },
+      {
+        "id": "pin-1-2",
+        "productId": "prod-2",
+        "x": 52,
+        "y": 68,
+        "category": "bottom",
+        "name": "투턱 와이드 울 슬랙스 (모카)",
+        "brand": "미니멀프로젝트",
+        "price": 68000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-1-3",
+        "productId": "prod-3",
+        "x": 35,
+        "y": 55,
+        "category": "bag",
+        "name": "소프트 레더 숄더 호보백",
+        "brand": "오소이 (OSOI)",
+        "price": 289000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-1-4",
+        "productId": "prod-4",
+        "x": 55,
+        "y": 92,
+        "category": "shoes",
+        "name": "청키 솔 더비 슈즈",
+        "brand": "닥터마틴",
+        "price": 210000,
+        "isSponsoredItem": false
+      }
+    ]
+  },
+  {
+    "id": "outfit-2",
+    "title": "화사한 봄 데이트 플리츠 스커트 코디",
+    "description": "봄바람 부는 날 입기 좋은 파스텔 톤 가디건과 롱 플리츠 스커트 조합! 은은한 크림 베이지 톤으로 부드러운 인상을 줍니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-2",
+    "createdAt": "2026-09-13T14:15:00Z",
+    "likes": 512,
+    "saves": 340,
+    "commentsCount": 42,
+    "views": 3800,
+    "isSponsored": false,
+    "season": "spring",
+    "place": "date",
+    "occasion": "date",
+    "tags": ["봄코디", "데이트룩", "가디건", "플리츠스커트", "페미닌"],
+    "pins": [
+      {
+        "id": "pin-2-1",
+        "productId": "prod-5",
+        "x": 50,
+        "y": 32,
+        "category": "top",
+        "name": "소프트 모헤어 크롭 가디건",
+        "brand": "르니나 (Lenina)",
+        "price": 118000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-2-2",
+        "productId": "prod-6",
+        "x": 52,
+        "y": 62,
+        "category": "bottom",
+        "name": "에어리 롱 플리츠 스커트",
+        "brand": "킨더살몬",
+        "price": 138000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-2-3",
+        "productId": "prod-7",
+        "x": 48,
+        "y": 90,
+        "category": "shoes",
+        "name": "스퀘어토 메리제인 플랫슈즈",
+        "brand": "쿠에른",
+        "price": 168000,
+        "isSponsoredItem": false
+      }
+    ]
+  },
+  {
+    "id": "outfit-3",
+    "title": "단정하고 세련된 오피스 출근룩 셋업",
+    "description": "중요한 미팅이 있는 날 입는 차콜 그레이 테일러드 자켓 셋업입니다. 너무 딱딱하지 않게 이너는 심플한 화이트 티셔츠를 매치했어요.",
+    "imageUrl": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-3",
+    "createdAt": "2026-09-12T09:00:00Z",
+    "likes": 280,
+    "saves": 210,
+    "commentsCount": 15,
+    "views": 1940,
+    "isSponsored": true,
+    "sponsorBrand": "클래식맨션",
+    "season": "autumn",
+    "place": "office",
+    "occasion": "office",
+    "tags": ["출근룩", "오피스룩", "셋업수트", "모던클래식", "직장인코디"],
+    "pins": [
+      {
+        "id": "pin-3-1",
+        "productId": "prod-8",
+        "x": 51,
+        "y": 35,
+        "category": "top",
+        "name": "세미오버 싱글 울 블레이저",
+        "brand": "클래식맨션",
+        "price": 189000,
+        "isSponsoredItem": true
+      },
+      {
+        "id": "pin-3-2",
+        "productId": "prod-9",
+        "x": 50,
+        "y": 70,
+        "category": "bottom",
+        "name": "테이퍼드 울 슬랙스",
+        "brand": "클래식맨션",
+        "price": 98000,
+        "isSponsoredItem": true
+      },
+      {
+        "id": "pin-3-3",
+        "productId": "prod-10",
+        "x": 30,
+        "y": 50,
+        "category": "bag",
+        "name": "레더 토트 브리프케이스",
+        "brand": "질스튜어트",
+        "price": 320000,
+        "isSponsoredItem": false
+      }
+    ]
+  },
+  {
+    "id": "outfit-4",
+    "title": "여름 페스티벌 & 바캉스 스트릿 룩",
+    "description": "뜨거운 여름 페스티벌에서 가장 돋보이는 크롭 슬리브리스 & 카고 파라슈트 팬츠 조합! 가볍고 통기성이 뛰어나 활동성이 최고입니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-4",
+    "createdAt": "2026-09-11T18:20:00Z",
+    "likes": 680,
+    "saves": 420,
+    "commentsCount": 58,
+    "views": 5200,
+    "isSponsored": false,
+    "season": "summer",
+    "place": "travel",
+    "occasion": "festival",
+    "tags": ["여름코디", "페스티벌룩", "카고팬츠", "스트릿패션", "힙스터"],
+    "pins": [
+      {
+        "id": "pin-4-1",
+        "productId": "prod-11",
+        "x": 49,
+        "y": 30,
+        "category": "top",
+        "name": "그래픽 립 크롭 탑",
+        "brand": "배디 (BADEE)",
+        "price": 42000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-4-2",
+        "productId": "prod-12",
+        "x": 52,
+        "y": 65,
+        "category": "bottom",
+        "name": "와이드 파라슈트 카고 팬츠",
+        "brand": "디스이즈네버댓",
+        "price": 109000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-4-3",
+        "productId": "prod-13",
+        "x": 53,
+        "y": 94,
+        "category": "shoes",
+        "name": "살로몬 XT-6 스니커즈",
+        "brand": "살로몬 (Salomon)",
+        "price": 260000,
+        "isSponsoredItem": false
+      }
+    ]
+  },
+  {
+    "id": "outfit-5",
+    "title": "한겨울 포근한 오버사이즈 롱 코트 & 머플러",
+    "description": "영하 5도 날씨에도 끄떡없는 헤비 울 발마칸 롱 코트와 체크 캐시미어 머플러. 도톰한 니트와 생지 데님을 매치해 클래식한 윈터 룩 완성!",
+    "imageUrl": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-1",
+    "createdAt": "2026-09-10T12:00:00Z",
+    "likes": 410,
+    "saves": 310,
+    "commentsCount": 19,
+    "views": 2900,
+    "isSponsored": false,
+    "season": "winter",
+    "place": "travel",
+    "occasion": "daily",
+    "tags": ["겨울코디", "발마칸코트", "머플러", "캐시미어", "겨울데일리"],
+    "pins": [
+      {
+        "id": "pin-5-1",
+        "productId": "prod-14",
+        "x": 50,
+        "y": 42,
+        "category": "top",
+        "name": "헤비 울 발마칸 코트 (오트밀)",
+        "brand": "쿠어 (COOOR)",
+        "price": 319000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-5-2",
+        "productId": "prod-15",
+        "x": 50,
+        "y": 24,
+        "category": "acc",
+        "name": "체크 캐시미어 머플러",
+        "brand": "아크네 스튜디오",
+        "price": 380000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-5-3",
+        "productId": "prod-16",
+        "x": 51,
+        "y": 75,
+        "category": "bottom",
+        "name": "스트레이트 핏 인디고 생지 데님",
+        "brand": "모드나인",
+        "price": 94000,
+        "isSponsoredItem": false
+      }
+    ]
+  },
+  {
+    "id": "outfit-6",
+    "title": "단정하고 깔끔한 친한 친구 결혼식 하객룩",
+    "description": "과하지 않으면서도 예의를 갖춘 네이비 블레이저와 크림 치노 팬츠 조합. 스카프로 은은하게 포인트를 주었습니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1000&q=80",
+    "creatorId": "creator-3",
+    "createdAt": "2026-09-09T16:40:00Z",
+    "likes": 390,
+    "saves": 285,
+    "commentsCount": 31,
+    "views": 2780,
+    "isSponsored": false,
+    "season": "spring",
+    "place": "wedding",
+    "occasion": "wedding",
+    "tags": ["하객룩", "결혼식코디", "네이비자켓", "치노팬츠", "격식룩"],
+    "pins": [
+      {
+        "id": "pin-6-1",
+        "productId": "prod-17",
+        "x": 48,
+        "y": 36,
+        "category": "top",
+        "name": "네이비 테일러드 더블 자켓",
+        "brand": "타임옴므",
+        "price": 580000,
+        "isSponsoredItem": false
+      },
+      {
+        "id": "pin-6-2",
+        "productId": "prod-18",
+        "x": 51,
+        "y": 70,
+        "category": "bottom",
+        "name": "레귤러핏 코튼 치노 트라우저",
+        "brand": "브룩스 브라더스",
+        "price": 145000,
+        "isSponsoredItem": false
+      }
+    ]
+  }
+]

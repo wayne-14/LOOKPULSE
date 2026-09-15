@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="LOOKPULSE - 누구나 가볍게 참여하고 스타일을 발견하는 패션 소셜 커뮤니티">
+  <meta name="theme-color" content="#8B6F9E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="LOOKPULSE">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icons/app-icon.svg">
+  <title>LOOKPULSE | 스타일 발견과 크리에이터 소셜 커뮤니티</title>
+
+  <style>
+    /* ==========================================================================
+       THEME & DESIGN SYSTEM (Pantone Yearly Theme Architecture)
+       ========================================================================== */
+    :root {
+      /* 2026 Pantone Trend Color: Modern Mocha & Cloud Violet Accent */
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-primary-dark: #5C436E;
+      --color-primary-rgb: 139, 111, 158;
+
+      /* Base Neutrals */
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-border-hover: #D1D1D1;
+
+      /* Typography */
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --color-text-tertiary: #999999;
+      --color-text-inverse: #FFFFFF;
+
+      /* Accents */
+      --color-accent-gold: #C5A059;
+      --color-accent-gold-bg: #FDF9F0;
+      --color-like: #FF3B30;
+
+      /* Fonts & Spacings */
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family-base);
+      background-color: var(--color-background);
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ==========================================================================
+       LAYOUT: Container & Header & Navigation
+       ========================================================================== */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      transition: var(--transition);
+    }
+
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--color-text-primary);
+    }
+
+    .logo__icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-size: 16px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav__link {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav__link:hover, .nav__link--active {
+      color: var(--color-primary-dark);
+    }
+
+    .nav__link--active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--color-primary);
+      border-radius: 2px;
+    }
+
+    /* Search Bar Component */
+    .search-container {
+      position: relative;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      transition: var(--transition);
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--color-primary);
+      background: #FFF;
+      box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15);
+    }
+
+    .search-bar__icon {
+      color: var(--color-text-tertiary);
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-bar__input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 14px;
+      color: var(--color-text-primary);
+    }
+
+    /* Search Popover */
+    .search-popover {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 16px;
+      z-index: 1050;
+    }
+
+    .search-popover--visible {
+      display: block;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .search-popover__section {
+      margin-bottom: 16px;
+    }
+
+    .search-popover__section:last-child {
+      margin-bottom: 0;
+    }
+
+    .search-popover__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .search-popover__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+    }
+
+    .search-popover__clear-btn {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+    }
+
+    .search-popover__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+    }
+
+    .chip:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .chip__remove {
+      margin-left: 6px;
+      font-size: 14px;
+      color: var(--color-text-tertiary);
+    }
+
+    .search-popover__ranked-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .search-popover__rank-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .rank-num {
+      font-weight: 700;
+      color: var(--color-text-tertiary);
+      width: 16px;
+    }
+
+    .rank-num--top {
+      color: var(--color-primary);
+    }
+
+    .rank-keyword:hover {
+      color: var(--color-primary-dark);
+      text-decoration: underline;
+    }
+
+    .search-popover__autocomplete-list {
+      list-style: none;
+    }
+
+    .search-popover__autocomplete-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--color-text-primary);
+      transition: var(--transition);
+    }
+
+    .search-popover__autocomplete-item a:hover {
+      background: var(--color-primary-light);
+      color: var(--color-primary-dark);
+    }
+
+    /* Actions */
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn--primary {
+      background: var(--color-primary);
+      color: #FFF;
+    }
+
+    .btn--primary:hover {
+      background: var(--color-primary-dark);
+      box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
+    }
+
+    .btn--outline {
+      border: 1px solid var(--color-border);
+      background: #FFF;
+      color: var(--color-text-primary);
+    }
+
+    .btn--outline:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .btn--sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* ==========================================================================
+       HERO BANNER SECTION
+       ========================================================================== */
+    .hero {
+      padding: 36px 0;
+      background: linear-gradient(180deg, rgba(var(--color-primary-rgb), 0.05) 0%, transparent 100%);
+    }
+
+    .hero__box {
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+      color: #FFF;
+      border-radius: var(--radius-lg);
+      padding: 44px 48px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero__content {
+      max-width: 540px;
+      z-index: 2;
+    }
+
+    .hero__tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero__title {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero__desc {
+      font-size: 15px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .hero__btn-white {
+      background: #FFF;
+      color: var(--color-primary-dark);
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+    }
+
+    .hero__btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Theme Switcher Widget */
+    .theme-picker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+    }
+
+    .theme-picker__dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #FFF;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .theme-picker__dot:hover {
+      transform: scale(1.2);
+    }
+
+    /* ==========================================================================
+       SECTION: TPO Category Chips Bar
+       ========================================================================== */
+    .tpo-bar {
+      padding: 20px 0;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tpo-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tpo-chip {
+      white-space: nowrap;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tpo-chip:hover, .tpo-chip--active {
+      background: var(--color-primary);
+      color: #FFF;
+      border-color: var(--color-primary);
+    }
+
+    /* ==========================================================================
+       SECTION: Rising Creators Carousel
+       ========================================================================== */
+    .creators-section {
+      padding: 24px 0 36px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+
+    .creators-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .creator-card {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .creator-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary-light);
+    }
+
+    .creator-card__avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 2px solid var(--color-primary);
+      padding: 2px;
+    }
+
+    .creator-card__name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .creator-card__bio {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .creator-card__stats {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .btn--following {
+      background: var(--color-primary-light) !important;
+      color: var(--color-primary-dark) !important;
+      border: 1px solid var(--color-primary) !important;
+    }
+
+    /* ==========================================================================
+       SECTION: Outfit Feed Card Grid
+       ========================================================================== */
+    .outfits-section {
+      padding: 24px 0 60px;
+    }
+
+    .outfits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .outfit-card {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    .outfit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .outfit-card__image-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 133%; /* 3:4 Aspect Ratio */
+      overflow: hidden;
+      background: #F0F0F0;
+    }
+
+    .outfit-card__img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .outfit-card:hover .outfit-card__img {
+      transform: scale(1.03);
+    }
+
+    /* Sponsored Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge--sponsored {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--color-accent-gold);
+      color: #FFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 10;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hotspot Pins on Outfit Card */
+    .hotspot-pin {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hotspot-pin__pulse {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      animation: pulse 2s infinite;
+    }
+
+    .hotspot-pin__core {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      border: 2px solid var(--color-primary);
+    }
+
+    .hotspot-pin--sponsored .hotspot-pin__core {
+      border-color: var(--color-accent-gold);
+      background: var(--color-accent-gold-bg);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Hotspot Popover */
+    .hotspot-popover {
+      position: absolute;
+      z-index: 100;
+      transform: translate(12px, -50%);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      box-shadow: var(--shadow-lg);
+      min-width: 170px;
+      pointer-events: auto;
+    }
+
+    .hotspot-popover--left {
+      transform: translate(calc(-100% - 12px), -50%);
+    }
+
+    .hotspot-popover__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .hotspot-popover__meta {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .hotspot-popover__price {
+      font-weight: 700;
+      color: var(--color-primary-dark);
+    }
+
+    /* Outfit Body & Info */
+    .outfit-card__body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .outfit-card__creator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .outfit-card__creator-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .outfit-card__creator-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .outfit-card__creator-badge {
+      font-size: 11px;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .outfit-card__title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .outfit-card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+
+    .outfit-card__tag {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    .outfit-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .social-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      transition: var(--transition);
+    }
+
+    .social-btn:hover {
+      color: var(--color-text-primary);
+    }
+
+    .social-btn--liked {
+      color: var(--color-like) !important;
+    }
+
+    .social-btn--saved {
+      color: var(--color-primary) !important;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .footer {
+      background: #FFF;
+      border-top: 1px solid var(--color-border);
+      padding: 40px 0;
+      margin-top: 60px;
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer__text {
+      font-size: 13px;
+      color: var(--color-text-tertiary);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    /* ==========================================================================
+       PWA BANNER & MOBILE BOTTOM NAVIGATION BAR
+       ========================================================================== */
+    .pwa-banner {
+      position: fixed;
+      bottom: calc(64px + env(safe-area-inset-bottom));
+      left: 16px;
+      right: 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 14px 18px;
+      z-index: 1050;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .pwa-banner__content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pwa-banner__icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .pwa-banner__text {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
+
+    .pwa-banner__text strong {
+      color: var(--color-text-primary);
+      font-weight: 700;
+    }
+
+    .pwa-banner__text span {
+      color: var(--color-text-secondary);
+      font-size: 11px;
+    }
+
+    .pwa-banner__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pwa-banner__close {
+      color: var(--color-text-tertiary);
+      font-size: 16px;
+      padding: 4px;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-tab-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(60px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--color-border);
+      z-index: 1000;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .tab-bar__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      text-decoration: none;
+      flex: 1;
+      padding: 6px 0;
+      transition: var(--transition);
+    }
+
+    .tab-bar__item--active, .tab-bar__item:hover {
+      color: var(--color-primary-dark);
+    }
+
+    .tab-bar__item--active svg {
+      stroke: var(--color-primary-dark);
+    }
+
+    .tab-bar__item-upload {
+      margin-top: -16px;
+    }
+
+    .tab-bar__upload-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
+      border: 3px solid #FFF;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE RULES
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .creators-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero__box {
+        padding: 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 70px; /* Space for Bottom Tab Bar */
+      }
+      .header__inner {
+        height: 60px;
+      }
+      .nav, .header__actions .btn--outline {
+        display: none; /* Replaced by Bottom Navigation Bar */
+      }
+      .header__actions .btn--primary {
+        display: none;
+      }
+      .mobile-tab-bar {
+        display: flex;
+      }
+      .search-container {
+        max-width: 100%;
+      }
+      .creators-grid {
+        grid-template-columns: 1fr;
+      }
+      .outfits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & GNB -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">✦</span>
+        <span>LOOKPULSE</span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-bar">
+          <span class="search-bar__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="text" class="search-bar__input" placeholder="스타일, 장소, 상품 키워드 검색..." />
+        </div>
+        <!-- Search Popover with Recent & Autocomplete -->
+        <div class="search-popover"></div>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="nav">
+        <a href="index.html" class="nav__link nav__link--active">홈</a>
+        <a href="pages/explore.html" class="nav__link">탐색</a>
+        <a href="pages/saved.html" class="nav__link">저장함</a>
+        <a href="pages/notifications.html" class="nav__link">알림</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="header__actions">
+        <a href="pages/upload.html" class="btn btn--primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>코디 올리기</span>
+        </a>
+        <a href="pages/user-profile.html" class="btn btn--outline">마이룩</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__box">
+          <div class="hero__content">
+            <span class="hero__tag">PANTONE OF THE YEAR THEME</span>
+            <h1 class="hero__title">사진 속 스타일을 발견하고<br>착장 상품을 바로 찾아보세요</h1>
+            <p class="hero__desc">마음에 드는 코디 사진의 펄스 핀을 터치하면 상의, 하의, 신발의 브랜드 정보와 유사 상품을 즉시 매칭해 드립니다.</p>
+            <div class="hero__actions">
+              <a href="pages/explore.html" class="hero__btn-white">트렌드 코디 둘러보기</a>
+            </div>
+          </div>
+          <!-- Theme Customizer Preview Widget -->
+          <div class="theme-picker">
+            <span>🎨 올해의 컬러:</span>
+            <div class="theme-picker__dot" style="background:#8B6F9E;" title="2026 Cloud Violet" onclick="LOOKPULSE.setPantoneTheme('#8B6F9E', '#F4EFF7', '#5C436E')"></div>
+            <div class="theme-picker__dot" style="background:#84594A;" title="Mocha Mousse" onclick="LOOKPULSE.setPantoneTheme('#84594A', '#F7F1EE', '#553427')"></div>
+            <div class="theme-picker__dot" style="background:#FFBE98;" title="Peach Fuzz" onclick="LOOKPULSE.setPantoneTheme('#E0825B', '#FDF3EE', '#9A4620')"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TPO CATEGORY CHIPS BAR -->
+    <section class="container">
+      <nav class="tpo-bar" aria-label="상황별 코디 카테고리">
+        <a href="pages/explore.html" class="tpo-chip tpo-chip--active">🔥 전체 트렌드</a>
+        <a href="pages/explore.html?season=autumn" class="tpo-chip">🍂 가을 신상</a>
+        <a href="pages/explore.html?place=cafe" class="tpo-chip">☕ 성수 카페룩</a>
+        <a href="pages/explore.html?occasion=office" class="tpo-chip">💼 스마트 오피스룩</a>
+        <a href="pages/explore.html?occasion=date" class="tpo-chip">🌸 설레는 데이트룩</a>
+        <a href="pages/explore.html?occasion=wedding" class="tpo-chip">🤵 깔끔한 하객룩</a>
+        <a href="pages/explore.html?place=travel" class="tpo-chip">✈️ 주말 여행룩</a>
+      </nav>
+    </section>
+
+    <!-- RISING CREATORS SECTION -->
+    <section class="container creators-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">이 주의 라이징 크리에이터 ✨</h2>
+          <p class="section-desc">취향 저격 센스를 가진 패션 인플루언서를 팔로우해보세요.</p>
+        </div>
+        <a href="pages/explore.html" class="btn btn--outline btn--sm">더보기</a>
+      </div>
+      <div class="creators-grid" id="creatorsGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- POPULAR OUTFITS FEED -->
+    <section class="container outfits-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">실시간 인기 코디 피드 📸</h2>
+          <p class="section-desc">사진 속 펄스 핀을 클릭하면 착장 상품 정보를 볼 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="outfits-grid" id="outfitsGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR (PWA) -->
+  <nav class="mobile-tab-bar" aria-label="모바일 내비게이션">
+    <a href="index.html" class="tab-bar__item tab-bar__item--active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>홈</span>
+    </a>
+    <a href="pages/explore.html" class="tab-bar__item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span>탐색</span>
+    </a>
+    <a href="pages/upload.html" class="tab-bar__item tab-bar__item-upload">
+      <div class="tab-bar__upload-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <span>올리기</span>
+    </a>
+    <a href="pages/saved.html" class="tab-bar__item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span>저장함</span>
+    </a>
+    <a href="pages/user-profile.html" class="tab-bar__item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>마이룩</span>
+    </a>
+  </nav>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__text">
+        © 2026 LOOKPULSE. Discover Style, Find the Item, Share Your Look.
+      </div>
+      <div class="footer__links">
+        <a href="docs/PRD.md">서비스 PRD</a>
+        <a href="pages/explore.html">둘러보기</a>
+        <a href="pages/upload.html">크리에이터 등록</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT MODULES -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/community.js"></script>
+  <script src="scripts/search.js"></script>
+  <script src="scripts/image-search.js"></script>
+  <script src="scripts/pwa.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Fetch Outfits and Creators Data
+      const [outfits, creators] = await Promise.all([
+        LOOKPULSE.fetchData('outfits.json'),
+        LOOKPULSE.fetchData('creators.json')
+      ]);
+
+      // 2. Render Creators
+      const creatorsGrid = document.getElementById('creatorsGrid');
+      if (creators && creatorsGrid) {
+        const followings = LPCommunity.getFollowings();
+        creatorsGrid.innerHTML = creators.map(c => {
+          const isFollowing = followings.includes(c.id);
+          return `
+            <div class="creator-card">
+              <img src="${c.avatar}" alt="${c.name}" class="creator-card__avatar" />
+              <h3 class="creator-card__name">
+                <a href="pages/creator-profile.html?id=${c.id}">${c.name}</a>
+              </h3>
+              <p class="creator-card__bio">${c.bio}</p>
+              <div class="creator-card__stats">팔로워 ${(c.followers).toLocaleString()} · 게시물 ${c.postsCount}</div>
+              <button type="button" class="btn btn--outline btn--sm ${isFollowing ? 'btn--following' : ''}" 
+                onclick="LPCommunity.toggleFollow('${c.id}', this)">
+                ${isFollowing ? '✓ 팔로잉' : '+ 팔로우'}
+              </button>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 3. Render Outfit Feed Cards with Hotspot Pins
+      const outfitsGrid = document.getElementById('outfitsGrid');
+      if (outfits && outfitsGrid) {
+        const likes = LPCommunity.getLikes();
+        const saves = LPCommunity.getSaves();
+
+        outfitsGrid.innerHTML = outfits.map(o => {
+          const isLiked = likes.includes(o.id);
+          const isSaved = saves.includes(o.id);
+
+          return `
+            <article class="outfit-card" id="card-${o.id}">
+              <div class="outfit-card__image-wrap" id="img-wrap-${o.id}">
+                <a href="pages/outfit-detail.html?id=${o.id}">
+                  <img src="${o.imageUrl}" alt="${o.title}" class="outfit-card__img" loading="lazy" />
+                </a>
+                ${o.isSponsored ? '<span class="badge badge--sponsored">협찬 AD</span>' : ''}
+              </div>
+              <div class="outfit-card__body">
+                <div class="outfit-card__creator">
+                  <a href="pages/creator-profile.html?id=${o.creatorId}">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="outfit-card__creator-img" />
+                  </a>
+                  <div>
+                    <a href="pages/creator-profile.html?id=${o.creatorId}" class="outfit-card__creator-name">${o.sponsorBrand ? o.sponsorBrand + ' 파트너' : '크리에이터'}</a>
+                    <div class="outfit-card__creator-badge">${o.place.toUpperCase()} · ${o.season.toUpperCase()}</div>
+                  </div>
+                </div>
+                <h3 class="outfit-card__title">
+                  <a href="pages/outfit-detail.html?id=${o.id}">${o.title}</a>
+                </h3>
+                <div class="outfit-card__tags">
+                  ${o.tags.map(t => `<span class="outfit-card__tag">#${t}</span>`).join('')}
+                </div>
+                <div class="outfit-card__footer">
+                  <div class="social-btn-group">
+                    <button type="button" class="social-btn ${isLiked ? 'social-btn--liked' : ''}" onclick="LPCommunity.toggleLike('${o.id}', this)">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                      <span class="social-btn__count">${o.likes}</span>
+                    </button>
+                    <a href="pages/outfit-detail.html?id=${o.id}" class="social-btn">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                      <span>${o.commentsCount}</span>
+                    </a>
+                  </div>
+                  <button type="button" class="social-btn ${isSaved ? 'social-btn--saved' : ''}" onclick="LPCommunity.toggleSave('${o.id}', this)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // 4. Attach Hotspot Pins to the cards
+        outfits.forEach(o => {
+          const container = document.getElementById(`img-wrap-${o.id}`);
+          if (container && o.pins) {
+            LPImageSearch.renderPins(container, o.pins);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LOOKPULSE - 이미지 기반 유사 패션 상품 매칭 검색">
+  <title>이미지 상품 검색 | LOOKPULSE Visual Match</title>
+
+  <style>
+    :root {
+      --color-primary: #8B6F9E;
+      --color-primary-light: #F4EFF7;
+      --color-primary-dark: #5C436E;
+      --color-background: #FAFAFA;
+      --color-surface: #FFFFFF;
+      --color-border: #EAEAEA;
+      --color-text-primary: #1A1A1A;
+      --color-text-secondary: #666666;
+      --color-text-tertiary: #999999;
+      --font-family-base: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-family-base); background-color: var(--color-background); color: var(--color-text-primary); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 800; }
+    .logo__icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #FFF; font-size: 16px; }
+
+    /* Layout */
+    .visual-search-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 36px;
+      padding: 40px 0 80px;
+    }
+
+    /* Target Product Box */
+    .source-box {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .source-box__title { font-size: 17px; font-weight: 800; margin-bottom: 16px; }
+
+    .source-img-wrap {
+      width: 100%;
+      height: 360px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      background: #F0F0F0;
+      margin-bottom: 16px;
+    }
+
+    .source-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .crop-selector {
+      position: absolute;
+      top: 15%;
+      left: 15%;
+      width: 70%;
+      height: 70%;
+      border: 2px dashed var(--color-primary);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+      border-radius: var(--radius-sm);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .crop-tag {
+      background: var(--color-primary);
+      color: #FFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Matched Results Grid */
+    .results-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .results-title { font-size: 24px; font-weight: 800; }
+    .results-sub { font-size: 14px; color: var(--color-text-secondary); margin-top: 4px; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #FFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--color-primary); }
+
+    .match-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(26, 26, 26, 0.85);
+      color: #FFF;
+      padding: 4px 8px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      z-index: 10;
+    }
+
+    .product-card__img-wrap {
+      width: 100%;
+      padding-top: 110%;
+      position: relative;
+      background: #F4F4F4;
+    }
+
+    .product-card__img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; }
+    .product-card__info { padding: 14px; }
+    .product-card__brand { font-size: 11px; font-weight: 700; color: var(--color-text-tertiary); margin-bottom: 2px; }
+    .product-card__name { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.35; }
+    .product-card__price { font-size: 14px; font-weight: 800; color: var(--color-primary-dark); }
+
+    @media (max-width: 800px) {
+      .visual-search-layout { grid-template-columns: 1fr; }
+      .source-box { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo">
+        <span class="logo__icon">✦</span>
+        <span>LOOKPULSE</span>
+      </a>
+      <a href="outfit-detail.html" style="font-size:14px; font-weight:600; color:var(--color-primary);">← 코디 상세로 돌아가기</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="visual-search-layout">
+      <!-- Left: Target Crop Image Box -->
+      <aside class="source-box">
+        <h2 class="source-box__title">검색 대상 아이템</h2>
+        <div class="source-img-wrap">
+          <img src="" alt="선택 상품" class="source-img" id="sourceImg" />
+          <div class="crop-selector">
+            <span class="crop-tag" id="cropCategory">상의 인식중</span>
+          </div>
+        </div>
+        <div id="sourceDetails">
+          <div style="font-size:12px; color:var(--color-text-tertiary); font-weight:700;" id="sourceBrand"></div>
+          <h3 style="font-size:16px; font-weight:800; margin: 4px 0 8px;" id="sourceName"></h3>
+          <div style="font-size:15px; font-weight:800; color:var(--color-primary-dark);" id="sourcePrice"></div>
+        </div>
+      </aside>
+
+      <!-- Right: Similar Matched Products -->
+      <section>
+        <div class="results-head">
+          <div>
+            <h1 class="results-title">AI 비주얼 유사 상품 매칭</h1>
+            <p class="results-sub">코디 사진의 색감, 실루엣, 소재를 분석하여 가장 유사한 상품을 추천합니다.</p>
+          </div>
+          <span style="font-size:13px; font-weight:700; color:var(--color-primary);" id="matchCount"></span>
+        </div>
+
+        <div class="product-grid" id="similarGrid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../scripts/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const products = await LOOKPULSE.fetchData('products.json') || [];
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('productId') || 'prod-1';
+      
+      const current = products.find(p => p.id === productId) || products[0];
+
+      if (current) {
+        document.getElementById('sourceImg').src = current.imageUrl;
+        document.getElementById('sourceBrand').textContent = current.brand;
+        document.getElementById('sourceName').textContent = current.name;
+        document.getElementById('sourcePrice').textContent = `${current.price.toLocaleString()}원`;
+        document.getElementById('cropCategory').textContent = `${current.category.toUpperCase()} 영역 선택`;
+
+        const similarList = current.similarProducts || [];
+        document.getElementById('matchCount').textContent = `유사 상품 ${similarList.length}건`;
+
+        const grid = document.getElementById('similarGrid');
+        if (similarList.length > 0) {
+          grid.innerHTML = similarList.map(item => `
+            <article class="product-card">
+              <span class="match-badge">${item.matchRate}% 일치</span>
+              <div class="product-card__img-wrap">
+                <img src="${item.imageUrl}" alt="${item.name}" class="product-card__img" />
+              </div>
+              <div class="product-card__info">
+                <div class="product-card__brand">${item.brand}</div>
+                <h3 class="product-card__name">${item.name}</h3>
+                <div class="product-card__price">${item.price.toLocaleString()}원</div>
+                <button type="button" class="btn btn--sm btn--outline" style="width:100%; margin-top:10px; border-radius:9999px;" onclick="LOOKPULSE.showToast('상품 상세 링크로 연결됩니다.', 'info')">
+                  착장 코디 보기
+                </button>
+              </div>
+            </article>
+          `).join('');
+        } else {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:60px 0;">유사 상품을 계산 중입니다...</div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

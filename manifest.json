@@ -1,0 +1,18 @@
+{
+  "name": "LOOKPULSE - 패션 소셜 커뮤니티",
+  "short_name": "LOOKPULSE",
+  "description": "누구나 가볍게 참여하고 코디 속 아이템을 즉각 탐색하는 비주얼 패션 커뮤니티",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#8B6F9E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/icons/app-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

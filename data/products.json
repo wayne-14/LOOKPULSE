@@ -1,0 +1,123 @@
+[
+  {
+    "id": "prod-1",
+    "name": "오버핏 비건 레더 바이커 자켓",
+    "brand": "무드스튜디오",
+    "category": "top",
+    "price": 149000,
+    "rating": 4.9,
+    "reviewsCount": 182,
+    "imageUrl": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
+    "outfitMatches": 18,
+    "similarProducts": [
+      {
+        "id": "sim-1",
+        "name": "클래식 브라운 라이더 자켓",
+        "brand": "도프제이슨",
+        "price": 139000,
+        "matchRate": 96,
+        "imageUrl": "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "id": "sim-2",
+        "name": "워시드 카우하이드 블루종",
+        "brand": "엘무드",
+        "price": 189000,
+        "matchRate": 92,
+        "imageUrl": "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "id": "sim-3",
+        "name": "에코 레더 미니멀 집업 자켓",
+        "brand": "인사일런스",
+        "price": 128000,
+        "matchRate": 89,
+        "imageUrl": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  },
+  {
+    "id": "prod-2",
+    "name": "투턱 와이드 울 슬랙스 (모카)",
+    "brand": "미니멀프로젝트",
+    "category": "bottom",
+    "price": 68000,
+    "rating": 4.8,
+    "reviewsCount": 420,
+    "imageUrl": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "outfitMatches": 34,
+    "similarProducts": [
+      {
+        "id": "sim-4",
+        "name": "딥 턱 와이드 트라우저",
+        "brand": "모디파이드",
+        "price": 72000,
+        "matchRate": 95,
+        "imageUrl": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  },
+  {
+    "id": "prod-5",
+    "name": "소프트 모헤어 크롭 가디건",
+    "brand": "르니나 (Lenina)",
+    "category": "top",
+    "price": 118000,
+    "rating": 4.9,
+    "reviewsCount": 98,
+    "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=600&q=80",
+    "outfitMatches": 27,
+    "similarProducts": [
+      {
+        "id": "sim-5",
+        "name": "페일 핑크 앙고라 브이넥 가디건",
+        "brand": "시엔느",
+        "price": 105000,
+        "matchRate": 94,
+        "imageUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  },
+  {
+    "id": "prod-8",
+    "name": "세미오버 싱글 울 블레이저",
+    "brand": "클래식맨션",
+    "category": "top",
+    "price": 189000,
+    "rating": 4.7,
+    "reviewsCount": 65,
+    "imageUrl": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
+    "outfitMatches": 12,
+    "similarProducts": [
+      {
+        "id": "sim-6",
+        "name": "차콜 그레이 2버튼 울 자켓",
+        "brand": "포터리",
+        "price": 278000,
+        "matchRate": 93,
+        "imageUrl": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  },
+  {
+    "id": "prod-13",
+    "name": "살로몬 XT-6 스니커즈",
+    "brand": "살로몬 (Salomon)",
+    "category": "shoes",
+    "price": 260000,
+    "rating": 5.0,
+    "reviewsCount": 310,
+    "imageUrl": "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80",
+    "outfitMatches": 51,
+    "similarProducts": [
+      {
+        "id": "sim-7",
+        "name": "아식스 젤-카야노 14",
+        "brand": "아식스",
+        "price": 179000,
+        "matchRate": 91,
+        "imageUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  }
+]
